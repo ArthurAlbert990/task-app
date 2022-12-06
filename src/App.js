@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Overview from "./components/Overview";
+import uniqid from 'uniqid';
 
 
 class App extends React.Component {
@@ -7,7 +8,10 @@ class App extends React.Component {
     super(props);
 
     this.state={
-      task:{text:''},
+      task:{
+        text:'',
+        id:uniqid(),
+        number:0},
       tasks: [],
     };
 
@@ -18,17 +22,28 @@ class App extends React.Component {
 
   handleChange(event){
     // console.log(event.target.value);
-    this.setState({task:{text:event.target.value}})
+    this.setState({task:
+      {
+        text:event.target.value,
+        id: this.state.task.id,
+        number: this.state.tasks.length+1}})
   }
 
   handleSubmit(event){
-    alert('Submitted: '+
-    this.state.task.text);
     event.preventDefault();
+
     this.setState({
       tasks: this.state.tasks.concat(this.state.task),
-      task:{text:''},
+      task:{
+        text: '',
+        id: uniqid(),
+        number:this.state.tasks.length+1
+      },
     })
+
+    alert('Submitted: '+
+    this.state.task.text+
+    ', ID:'+this.state.task.id)
   }
   
   render(){
@@ -45,7 +60,6 @@ class App extends React.Component {
 
         {/* calls Overview to render */}
         <Overview tasks ={tasks}/>
-
       </div>
     );
   }
