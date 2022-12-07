@@ -15,8 +15,10 @@ class App extends React.Component {
       tasks: [],
     };
 
+    //bind dos métodos, atribui o mesmo contexto!
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.deleteTask = this.deleteTask.bind(this)
     
   }
 
@@ -45,6 +47,17 @@ class App extends React.Component {
     this.state.task.text+
     ', ID:'+this.state.task.id)
   }
+
+  //delete by id
+  deleteTask(id) {
+    //define lista de tasks atuais, []
+    const tasks = this.state.tasks;
+    // filtra tasks, retira pelo id
+    let newTaskList = tasks.filter(task=> task.id !== id);
+    console.log(newTaskList);
+    //setar novo state, React renderiza automático:
+    this.setState({tasks:newTaskList});
+}
   
   render(){
     const {task, tasks} = this.state;
@@ -59,7 +72,8 @@ class App extends React.Component {
         </form>
 
         {/* calls Overview to render */}
-        <Overview tasks ={tasks}/>
+        {/* Passando task e deleteTask em props */}
+        <Overview tasks ={tasks} deleteTask={this.deleteTask}/>
       </div>
     );
   }
